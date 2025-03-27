@@ -7,8 +7,32 @@ def parse_time_expression(expression):
         raise ValueError("expression must be a string")
 
     expression = expression.lower()
-    
     expression = expression.replace('noon', '12').replace('midnight', '0')
+    expression = expression.strip()
+    words_to_numbers = {
+        "zero": 0, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
+        "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10,
+        "eleven": 11, "twelve": 12, "thirteen": 13, "fourteen": 14,
+        "fifteen": 15, "sixteen": 16, "seventeen": 17, "eighteen": 18,
+        "nineteen": 19, "twenty": 20, "twenty one": 21, "twenty two": 22,
+        "twenty three": 23
+    }
+
+    for word, real_integer in words_to_numbers.items():
+        expression = expression.replace(word, str(real_integer))
+
+    #match = re.match(r'^(zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|twenty one|twenty two|twenty three)$', expression)
+    #if match:
+    #    words_to_numbers = {
+    #        "zero": 0, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
+    #        "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10,
+    #        "eleven": 11, "twelve": 12, "thirteen": 13, "fourteen": 14,
+    #        "fifteen": 15, "sixteen": 16, "seventeen": 17, "eighteen": 18,
+    #        "nineteen": 19, "twenty": 20, "twenty one": 21, "twenty two": 22,
+    #        "twenty three": 23
+    #    }
+    #    hour = words_to_numbers[match.group(1)]
+    #    return (hour, 0) 
      
     # if normal number
     match = re.match(r'^(\d{1,2})$', expression)
@@ -21,19 +45,6 @@ def parse_time_expression(expression):
         hour = int(match.group(1))
         minute = int(match.group(2))
         return (hour, minute)
-    
-    match = re.match(r'^(zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|twenty one|twenty two|twenty three)$', expression)
-    if match:
-        words_to_numbers = {
-            "zero": 0, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
-            "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10,
-            "eleven": 11, "twelve": 12, "thirteen": 13, "fourteen": 14,
-            "fifteen": 15, "sixteen": 16, "seventeen": 17, "eighteen": 18,
-            "nineteen": 19, "twenty": 20, "twenty one": 21, "twenty two": 22,
-            "twenty three": 23
-        }
-        hour = words_to_numbers[match.group(1)]
-        return (hour, 0)
     
     match = re.match(r'^(\d{1,2})(?::(\d{1,2}))?\s*(am|pm)$', expression)
     if match:
